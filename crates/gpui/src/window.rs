@@ -845,6 +845,7 @@ impl Window {
         let WindowOptions {
             window_bounds,
             titlebar,
+            ignore_windows_events,
             focus,
             show,
             kind,
@@ -864,6 +865,7 @@ impl Window {
             WindowParams {
                 bounds,
                 titlebar,
+                ignore_windows_events,
                 kind,
                 is_movable,
                 focus,

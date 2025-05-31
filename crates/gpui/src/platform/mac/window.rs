@@ -510,6 +510,7 @@ impl MacWindow {
         WindowParams {
             bounds,
             titlebar,
+            ignore_windows_events,
             kind,
             is_movable,
             focus,
