@@ -3991,6 +3991,19 @@ impl Window {
         }))
     }
 
+    /// Register a callback that can interrupt the closing of the current window based the returned boolean.
+    /// If the callback returns false, the window won't be closed.
+    pub fn on_resize(
+        &self,
+        cx: &App,
+        f: impl Fn(&mut Window, &mut App, Size<Pixels>, f32) -> () + 'static,
+    ) {
+        let mut cx = self.to_async(cx);
+        self.platform_window.on_resize(Box::new(move |size, ratio| {
+            cx.update(|window, cx| f(window, cx, size, ratio)).expect("TODO: panic message");
+        }))
+    }
+
     /// Register an action listener on the window for the next frame. The type of action
     /// is determined by the first parameter of the given listener. When the next frame is rendered
     /// the listener will be cleared.
