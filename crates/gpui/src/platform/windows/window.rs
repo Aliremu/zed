@@ -66,6 +66,7 @@ pub(crate) struct WindowsWindowStatePtr {
     pub(crate) state: RefCell<WindowsWindowState>,
     pub(crate) handle: AnyWindowHandle,
     pub(crate) hide_title_bar: bool,
+    pub(crate) ignore_windows_events: bool,
     pub(crate) is_movable: bool,
     pub(crate) executor: ForegroundExecutor,
     pub(crate) windows_version: WindowsVersion,
@@ -247,6 +248,7 @@ impl WindowsWindowStatePtr {
             state,
             handle: context.handle,
             hide_title_bar: context.hide_title_bar,
+            ignore_windows_events: context.ignore_windows_events,
             is_movable: context.is_movable,
             executor: context.executor.clone(),
             windows_version: context.windows_version,
@@ -357,6 +359,7 @@ struct WindowCreateContext<'a> {
     inner: Option<Result<Rc<WindowsWindowStatePtr>>>,
     handle: AnyWindowHandle,
     hide_title_bar: bool,
+    ignore_windows_events: bool,
     display: WindowsDisplay,
     transparent: bool,
     is_movable: bool,
@@ -392,6 +395,8 @@ impl WindowsWindow {
             .as_ref()
             .map(|titlebar| titlebar.appears_transparent)
             .unwrap_or(true);
+        let ignore_windows_events = params
+            .ignore_windows_events;
         let windowname = HSTRING::from(
             params
                 .titlebar
@@ -420,6 +425,7 @@ impl WindowsWindow {
             inner: None,
             handle,
             hide_title_bar,
+            ignore_windows_events,
             display,
             transparent: true,
             is_movable: params.is_movable,

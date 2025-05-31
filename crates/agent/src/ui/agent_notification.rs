@@ -53,6 +53,7 @@ impl AgentNotification {
         WindowOptions {
             window_bounds: Some(WindowBounds::Windowed(bounds)),
             titlebar: None,
+            ignore_windows_events: false,
             focus: false,
             show: true,
             kind: WindowKind::PopUp,

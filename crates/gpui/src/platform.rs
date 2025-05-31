@@ -1020,6 +1020,13 @@ pub struct WindowOptions {
     /// The titlebar configuration of the window
     pub titlebar: Option<TitlebarOptions>,
 
+    /// Ignores handling of event messages for Windows
+    #[cfg_attr(
+        any(target_os = "windows"),
+        allow(dead_code)
+    )]
+    pub ignore_windows_events: bool,
+
     /// Whether the window should be focused when created
     pub focus: bool,
 
@@ -1059,12 +1066,19 @@ pub struct WindowOptions {
     ),
     allow(dead_code)
 )]
-pub(crate) struct WindowParams {
+pub struct WindowParams {
     pub bounds: Bounds<Pixels>,
 
     /// The titlebar configuration of the window
     #[cfg_attr(feature = "wayland", allow(dead_code))]
     pub titlebar: Option<TitlebarOptions>,
+
+    /// Ignores handling of event messages for Windows
+    #[cfg_attr(
+        any(target_os = "windows"),
+        allow(dead_code)
+    )]
+    pub ignore_windows_events: bool,
 
     /// The kind of window to create
     #[cfg_attr(any(target_os = "linux", target_os = "freebsd"), allow(dead_code))]
@@ -1128,6 +1142,7 @@ impl Default for WindowOptions {
                 appears_transparent: Default::default(),
                 traffic_light_position: Default::default(),
             }),
+            ignore_windows_events: false,
             focus: true,
             show: true,
             kind: WindowKind::Normal,
